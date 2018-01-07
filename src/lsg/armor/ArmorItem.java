@@ -1,17 +1,12 @@
 package lsg.armor;
 
-import lsg.bags.Collectible;
+public class ArmorItem implements lsg.bags.Collectible{
 
-public class ArmorItem implements Collectible{
     private String name;
     private float armorValue;
 
-    public String getName() {
-        return name;
-    }
-
-    public float getArmorValue() {
-        return armorValue;
+    public ArmorItem(){
+        this("Default",1.0f);
     }
 
     public ArmorItem(String name, float armorValue){
@@ -19,13 +14,20 @@ public class ArmorItem implements Collectible{
         this.armorValue = armorValue;
     }
 
-    @Override
-    public String toString() {
-        return (name+"("+armorValue+")");
+    public int getWeight(){
+        return 4;
+    }
+
+    public String getName(){
+        return name;
+    }
+
+    public float getArmorValue(){
+        return armorValue;
     }
 
     @Override
-    public int getWeight() {
-        return 4;
+    public String toString(){
+        return name + "(" + armorValue + ")";
     }
 }

@@ -7,14 +7,10 @@ public abstract class Ring extends BuffItem {
 	
 	protected int power ; 
 	protected Hero hero ;
-	
+
 	public Ring(String name, int power) {
 		super(name) ;
 		this.power = power ;
-	}
-
-	public int getRingPower() {
-		return power;
 	}
 	
 	public void setHero(Hero hero) {

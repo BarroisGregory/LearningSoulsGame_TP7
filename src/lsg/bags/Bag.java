@@ -3,44 +3,64 @@ package lsg.bags;
 import lsg.LearningSoulsGame;
 import lsg.armor.BlackWitchVeil;
 import lsg.armor.DragonSlayerLeggings;
+import lsg.armor.RingedKnightArmor;
+import lsg.buffs.rings.DragonSlayerRing;
 import lsg.consumables.food.Hamburger;
+import lsg.exceptions.BagFullException;
+import lsg.weapons.ShotGun;
 import lsg.weapons.Sword;
 
 import java.util.HashSet;
+import java.util.Iterator;
 
 public class Bag {
-    private int capacity, weight;
-    private HashSet<Collectible> items = new HashSet<>();
+
+    private int capacity;
+    private int weight;
+    private HashSet<Collectible> items;
 
     public Bag(int capacity){
         this.capacity = capacity;
-        weight = 0;
+        items = new HashSet<Collectible>();
     }
 
     public int getCapacity() {
         return capacity;
     }
 
+    protected void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
     public int getWeight() {
         return weight;
     }
 
-    public void push(Collectible item){
-        if(item.getWeight() <= capacity-weight){
-            weight += item.getWeight();
+    protected void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    public void push(Collectible item) throws BagFullException{
+        if(capacity < this.weight + item.getWeight()){
+            throw new BagFullException(this);
+        }
+        if(this.weight + item.getWeight() <= capacity) {
             items.add(item);
+            weight += item.getWeight();
         }
     }
 
     public Collectible pop(Collectible item){
-        if(items.contains(item)){
-            items.remove(item);
-            weight -= item.getWeight();
-            return item;
+        Iterator<Collectible> it = items.iterator();
+        while(it.hasNext()) {
+            Collectible c = it.next();
+            if (c == item) {
+                it.remove();
+                weight -= c.getWeight();
+                return c;
+            }
         }
-        else {
-            return null;
-        }
+        return null;
     }
 
     public boolean contains(Collectible item){
@@ -48,55 +68,47 @@ public class Bag {
     }
 
     public Collectible[] getItems(){
-        Collectible[] tab = new Collectible[items.size()];
-        int i = 0;
-        for(Collectible item : items){
-            tab[i] = item;
-            i++;
-        }
-        return tab;
-    }
-
-    @Override
-    public String toString() {
-        String str = getClass().getSimpleName() + " [ " + items.size() + " items | " + weight + "/" + capacity + " kg ]\n";
-        if(items.isEmpty()){
-            str += LearningSoulsGame.BULLET_POINT +" (empty)";
-        }
-        else {
-            for (Collectible item : items) {
-                str += LearningSoulsGame.BULLET_POINT + " " + item.toString() + "["+item.getWeight()+" kg]\n";
-            }
-        }
-        return str;
+        return items.toArray(new Collectible[items.size()]);
     }
 
     public static void transfer(Bag from, Bag into){
+        if(from == null || into == null){
+            return;
+        }
+
         if(from == into){
             return;
         }
+
         for(Collectible item: from.getItems()){
-            into.push(item);
-            if(into.contains(item)){
-                from.pop(item);
+            try{
+                into.push(item);
+                if(into.contains(item)){
+                    from.pop(item);
+                }
+            }catch (BagFullException e){
+                System.out.println("Bag is full !");
             }
+
         }
     }
 
-    public static void main(String[] args) {
-        DragonSlayerLeggings test = new DragonSlayerLeggings();
-        SmallBag bag = new SmallBag();
-        SmallBag bag2 = new SmallBag();
-        bag.push(new BlackWitchVeil());
-        bag.push(test);
-        bag.push(new Sword());
-        bag.push(new Hamburger());
-        System.out.println(bag.toString());
-        bag.pop(test);
-        System.out.println("Pop sur "+test.toString());
-        System.out.println();
-        System.out.println(bag.toString());
-
-        transfer(bag,bag2);
+    @Override
+    public String toString(){
+        String result = String.format("%s [ %d items | %d/%d kg ]",
+                getClass().getSimpleName(),
+                items.size(),
+                weight,
+                capacity
+        );
+        if(items.size() == 0){
+            result += "\n" + LearningSoulsGame.BULLET_POINT + "(empty)";
+        }
+        else{
+            for (Collectible item: items) {
+                result += "\n"+ LearningSoulsGame.BULLET_POINT + item.toString() + "[" + item.getWeight() + " kg]";
+            }
+        }
+        return result;
     }
 }

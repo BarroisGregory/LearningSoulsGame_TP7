@@ -1,7 +1,8 @@
 package lsg.consumables.drinks;
 
-public class Coffee extends Drink {
+public class Coffee extends Drink{
+
     public Coffee(){
-        super("Hot Grandmother Coffee",10);
+        super("Hot Grandmother Coffee", 10);
     }
 }

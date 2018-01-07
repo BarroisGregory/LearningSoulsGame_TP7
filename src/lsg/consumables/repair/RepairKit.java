@@ -1,21 +1,25 @@
 package lsg.consumables.repair;
 
 import lsg.consumables.Consumable;
+import lsg.exceptions.ConsumeEmptyException;
 import lsg.weapons.Weapon;
 
 public class RepairKit extends Consumable{
+
     public RepairKit(){
         super("Repair Kit",10, Weapon.DURABILITY_STAT_STRING);
     }
 
-    public int use(){
-        int val = 1;
-        if(super.getCapacity()>0){
-            super.setCapacity(super.getCapacity()-1);
+    @Override
+    public int use() throws ConsumeEmptyException{
+        int tmpCapacity = getCapacity();
+        if(tmpCapacity == 0){
+            throw new ConsumeEmptyException(this);
         }
         else{
-            val = 0;
+            setCapacity(getCapacity() - 1);
+            return 1;
         }
-        return val;
+
     }
 }

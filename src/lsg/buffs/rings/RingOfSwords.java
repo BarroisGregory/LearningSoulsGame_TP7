@@ -4,7 +4,8 @@ import lsg.characters.Hero;
 import lsg.weapons.Sword;
 
 public class RingOfSwords extends Ring{
-	
+
+
 	public RingOfSwords() {
 		super("Ring of Swords", 10) ;
 	}
@@ -15,11 +16,7 @@ public class RingOfSwords extends Ring{
 		else return 0f ;
 		
 	}
-	
-	/**
-	 * Un test...
-	 * @param args non utilisé
-	 */
+
 	public static void main(String[] args) {
 		Hero hero = new Hero() ;
 		RingOfSwords r = new RingOfSwords() ;

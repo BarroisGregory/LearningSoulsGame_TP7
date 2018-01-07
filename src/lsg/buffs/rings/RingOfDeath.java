@@ -18,11 +18,7 @@ public class RingOfDeath extends Ring{
 			else return 0f ;
 		}else return 0f ;
 	}
-	
-	/**
-	 * Un test...
-	 * @param args non utilisé
-	 */
+
 	public static void main(String[] args) {
 		Hero hero = new Hero() ;
 		Ring r = new RingOfDeath() ;

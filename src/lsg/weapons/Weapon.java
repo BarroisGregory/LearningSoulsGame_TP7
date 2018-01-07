@@ -1,14 +1,21 @@
 package lsg.weapons;
 
-import lsg.bags.Collectible;
 import lsg.consumables.repair.RepairKit;
+import lsg.exceptions.ConsumeEmptyException;
+import lsg.exceptions.ConsumeNullException;
 
-import static java.lang.String.format;
+public class Weapon implements lsg.bags.Collectible{
 
-public class Weapon implements Collectible{
     private String name;
-    private int minDamage, maxDamage, stamCost, durability;
+    private int minDamage;
+    private int maxDamage;
+    private int stamCost;
+    private int durability;
     public static final String DURABILITY_STAT_STRING = "durability";
+
+    public Weapon(){
+        this("Default Weapon", 1, 1 ,1, 1);
+    }
 
     public Weapon(String name, int minDamage, int maxDamage, int stamCost, int durability){
         this.name = name;
@@ -18,64 +25,52 @@ public class Weapon implements Collectible{
         this.durability = durability;
     }
 
-    public void use(){
-        this.durability --;
-    }
-
-    public boolean isBroken(){
-        return (this.durability<1);
-    }
-
-    public String toString() {
-        return (name +" "+"(min:"+minDamage+" "+"max:"+maxDamage+" "+"stam:"+stamCost+" "+DURABILITY_STAT_STRING.substring(0,3)+":"+durability+")");
+    public int getWeight(){
+        return 2;
     }
 
     public String getName() {
         return name;
     }
 
-    public int getDurability() {
-        return durability;
+    public int getMinDamage() {
+        return minDamage;
     }
 
     public int getMaxDamage() {
         return maxDamage;
     }
 
-    public int getMinDamage() {
-        return minDamage;
-    }
-
     public int getStamCost() {
         return stamCost;
     }
 
-    protected void setName(String name) {
-        this.name = name;
+    public int getDurability() {
+        return durability;
     }
 
     private void setDurability(int durability) {
         this.durability = durability;
     }
 
-    protected void setMaxDamage(int maxDamage) {
-        this.maxDamage = maxDamage;
+    public void use(){
+        setDurability(durability - 1);
     }
 
-    protected void setMinDamage(int minDamage) {
-        this.minDamage = minDamage;
+    public boolean isBroken(){
+        return durability <= 0;
     }
 
-    protected void setStamCost(int stamCost) {
-        this.stamCost = stamCost;
-    }
-
-    public void repairWith(RepairKit kit){
-        durability += kit.use();
+    public void repairWith(RepairKit kit) throws ConsumeNullException, ConsumeEmptyException{
+        if(kit == null){
+            throw new ConsumeNullException();
+        }
+        this.durability += kit.use();
     }
 
     @Override
-    public int getWeight() {
-        return 2;
+    public String toString(){
+        return String.format("%s (min:%d max:%d stam:%d dur:%d)",
+                name, minDamage, maxDamage, stamCost, durability);
     }
 }

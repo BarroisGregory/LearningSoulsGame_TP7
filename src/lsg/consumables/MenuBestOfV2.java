@@ -7,11 +7,15 @@ import lsg.consumables.food.Americain;
 import lsg.consumables.food.Hamburger;
 
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.logging.ConsoleHandler;
 
-public class MenuBestOfV2 {
-    private HashSet<Consumable> menu = new HashSet<>();
+public class MenuBestOfV2{
+
+    private HashSet<Consumable> menu;
 
     public MenuBestOfV2(){
+        menu = new HashSet<>();
         menu.add(new Hamburger());
         menu.add(new Wine());
         menu.add(new Americain());
@@ -20,18 +24,21 @@ public class MenuBestOfV2 {
     }
 
     @Override
-    public String toString() {
-        String str = getClass().getSimpleName()+" :\n";
+    public String toString(){
+        String result = getClass().getSimpleName() + " :\n";
         int i = 0;
-        for(Consumable aff :menu){
-            str += i+1 + " : " + aff.toString() +"\n";
+        Iterator<Consumable> iterator = menu.iterator();
+        while(iterator.hasNext()){
+            result += (i+1) + " : " + iterator.next().toString() + "\n";
             i++;
         }
-        return str;
+        return result;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args){
         MenuBestOfV2 m1 = new MenuBestOfV2();
-        System.out.println(m1.toString());
+        System.out.print(m1.toString());
     }
+
 }
+

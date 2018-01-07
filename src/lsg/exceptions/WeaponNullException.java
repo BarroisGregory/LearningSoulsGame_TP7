@@ -1,7 +1,13 @@
 package lsg.exceptions;
 
-public class WeaponNullException extends Exception {
+public class WeaponNullException extends Exception{
+
     public WeaponNullException(){
-        super("No weapon !");
+        super();
+    }
+
+    @Override
+    public String toString(){
+        return "no weapon !";
     }
 }

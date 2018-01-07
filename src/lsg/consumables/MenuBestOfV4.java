@@ -8,9 +8,11 @@ import lsg.consumables.food.Hamburger;
 import lsg.consumables.repair.RepairKit;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.logging.ConsoleHandler;
 
-public class MenuBestOfV4 extends LinkedHashSet<Consumable> {
+public class MenuBestOfV4 extends LinkedHashSet<Consumable>{
 
     public MenuBestOfV4(){
         this.add(new Hamburger());
@@ -22,18 +24,21 @@ public class MenuBestOfV4 extends LinkedHashSet<Consumable> {
     }
 
     @Override
-    public String toString() {
-        String str = getClass().getSimpleName()+" :\n";
+    public String toString(){
+        String result = getClass().getSimpleName() + " :\n";
         int i = 0;
-        for(Consumable aff :this){
-            str += i+1 + " : " + aff.toString() +"\n";
+        Iterator<Consumable> iterator = this.iterator();
+        while(iterator.hasNext()){
+            result += (i+1) + " : " + iterator.next().toString() + "\n";
             i++;
         }
-        return str;
+        return result;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args){
         MenuBestOfV4 m1 = new MenuBestOfV4();
-        System.out.println(m1.toString());
+        System.out.print(m1.toString());
     }
+
 }
+
